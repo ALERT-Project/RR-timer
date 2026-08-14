@@ -105,26 +105,25 @@
     }
     .score-box.active-score { background: var(--accent); color: white; }
     .score-box.m-score { background: var(--red); color: white; }
-    .score-box.editable { background: white; border: 2px solid #f59e0b; color: var(--ink); cursor: text; }
 
-    /* OVERRIDE BAR */
-    .override-bar {
+    /* MOD (per-parameter modification) */
+    .mod-chip {
+        width: 100%; margin-top: 6px; padding: 6px 0;
+        border-radius: 8px; border: 2px solid var(--line);
+        background: white; color: var(--muted);
+        font-size: 0.7rem; font-weight: 800; letter-spacing: 1px;
+        text-transform: uppercase; cursor: pointer;
+        transition: all 0.2s; touch-action: manipulation;
+    }
+    .mod-chip.active { background: #f59e0b; border-color: #f59e0b; color: white; }
+    .score-box.modded {
+        background: #f3f4f6; color: #9ca3af; text-decoration: line-through;
+    }
+    .mod-note {
         background: #fffbeb; border: 1px solid #fcd34d; color: #92400e;
-        padding: 12px 16px; border-radius: 10px; display: flex; 
-        justify-content: space-between; align-items: center; margin-bottom: 16px;
+        padding: 10px 14px; border-radius: 10px; margin-bottom: 16px;
+        font-size: 0.8rem; font-weight: 600; line-height: 1.4;
     }
-    .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-        position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-        background-color: #ccc; transition: .4s; border-radius: 34px;
-    }
-    .slider:before {
-        position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
-        background-color: white; transition: .4s; border-radius: 50%;
-    }
-    input:checked + .slider { background-color: #f59e0b; }
-    input:checked + .slider:before { transform: translateX(20px); }
 
     /* AVPU */
     .avpu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: var(--line); padding: 4px; border-radius: 10px; }
@@ -143,43 +142,81 @@
 
     /* --- RR TIMER UPDATED STYLES --- */
     
-    /* Smaller Timer container */
+    /* Timer container - stacked, prominent seconds count */
     .timer-display {
-        background: #111827; color: white; border-radius: 12px; padding: 12px 20px;
-        text-align: center; margin-bottom: 12px; position: relative; overflow: hidden;
-        display: flex; justify-content: center; align-items: center; gap: 12px;
+        background: #111827; color: white; border-radius: 16px; padding: 24px 20px;
+        text-align: center; margin-bottom: 20px; position: relative; overflow: hidden;
     }
-    /* Much smaller timer font */
-    .time-big { font-size: 2.5rem; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums;}
-    .time-label { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; font-weight: 600; padding-top: 6px;}
-    
-    /* Massive Tap Button */
+    .time-big { font-size: 5rem; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums;}
+    .time-label { font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; font-weight: 600; margin-top: 8px;}
+
+    /* Tap Button - auto height so the live rate stays on screen while tapping */
     .tap-btn-lg {
-        width: 100%; 
-        height: 320px; /* FIXED LARGE HEIGHT */
-        padding: 20px; 
+        width: 100%;
+        padding: 30px 20px;
         border-radius: 24px; border: none;
-        background: var(--accent); color: white; 
-        font-size: 2.5rem; /* Larger Text */
+        background: var(--accent); color: white;
+        font-size: 1.75rem;
         font-weight: 900;
         text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
         box-shadow: 0 10px 25px -5px rgba(13, 148, 136, 0.4);
-        transition: transform 0.1s; 
+        transition: transform 0.1s;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        touch-action: manipulation; /* Improves touch response */
+        touch-action: manipulation; /* Removes the ~300ms double-tap zoom delay */
     }
     .tap-btn-lg:active { transform: scale(0.96); background: var(--accent-hover); }
 
-    /* Result Box - Bigger numbers */
+    /* Result Box */
     .rr-result-box {
-        margin-top: 16px; text-align: center; padding: 20px; 
+        margin-top: 20px; text-align: center; padding: 20px;
         background: white; border: 4px solid #f3f4f6; border-radius: 16px;
     }
     .rr-value-large {
-        font-size: 6rem; /* HUGE NUMBER */
-        font-weight: 900; color: var(--ink); 
+        font-size: 4rem;
+        font-weight: 900; color: var(--ink);
         line-height: 1; margin-bottom: -5px;
     }
+
+    /* GCS COMPACT LAYOUT */
+    .gcs-total-bar {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        padding: 16px 20px; border-radius: 16px;
+        color: white; box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 12px;
+    }
+    .gcs-total-left { display: flex; flex-direction: column; gap: 2px; }
+    .gcs-total-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; }
+    .gcs-total-num { font-size: 3rem; font-weight: 900; line-height: 1; }
+    .gcs-breakdown { font-size: 0.85rem; color: #94a3b8; font-weight: 600; letter-spacing: 1px; margin-top: 2px; }
+
+    .gcs-row {
+        background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+        padding: 12px; margin-bottom: 10px;
+    }
+    .gcs-row-header {
+        display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;
+    }
+    .gcs-row-name { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+    .gcs-row-score { font-size: 1.4rem; font-weight: 900; color: var(--accent); }
+    /* Wrap rather than scroll: the lowest (most critical) option must never be off-screen */
+    .gcs-pills {
+        display: flex; gap: 6px; flex-wrap: wrap;
+    }
+    .gcs-pill {
+        flex: 1 1 auto; min-width: 62px; padding: 10px 6px;
+        border-radius: 10px; border: 2px solid var(--line); background: var(--input-bg);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        cursor: pointer; transition: transform 0.1s, background 0.2s;
+        color: var(--ink); touch-action: manipulation;
+    }
+    .gcs-pill:active { transform: scale(0.95); }
+    .gcs-pill.active {
+        background: var(--accent); border-color: var(--accent); color: white;
+    }
+    .gcs-pill-num { font-size: 1.1rem; font-weight: 900; line-height: 1; }
+    .gcs-pill-lbl { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; margin-top: 3px; opacity: 0.65; white-space: nowrap; }
+    .gcs-pill.active .gcs-pill-lbl { opacity: 0.85; }
 
   </style>
 </head>
@@ -201,6 +238,10 @@
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 Resp Rate Timer
             </button>
+            <button class="btn-launch" style="background:#475569" onclick="showView('view-gcs')">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M9 15c.8.7 1.8 1 3 1s2.2-.3 3-1"/></svg>
+                GCS Calculator
+            </button>
         </div>
         <div style="text-align:center; color:var(--muted); margin-top:40px; font-size:0.9rem;">
             Select a tool above.<br>
@@ -212,12 +253,8 @@
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Back to Menu
         </button>
         
-        <div class="override-bar">
-            <span style="font-weight:700; font-size:0.9rem;">Enable Manual Override</span>
-            <label class="toggle-switch">
-                <input type="checkbox" id="adds-override" onchange="toggleOverride()">
-                <span class="slider"></span>
-            </label>
+        <div class="mod-note">
+            Tap <strong>MOD</strong> on any parameter with a documented modification. That parameter scores 0 and will not trigger a MET call.
         </div>
 
         <div class="card">
@@ -232,7 +269,8 @@
                     <input type="number" inputmode="decimal" class="calc-input" id="calc_rr" placeholder="RR" oninput="runAddsCalc()">
                 </div>
                 <div class="col-4">
-                    <input type="text" class="score-box" id="score_rr" value="0" readonly oninput="runManualTotal()">
+                    <input type="text" class="score-box" id="score_rr" value="0" readonly>
+                    <button type="button" class="mod-chip" id="mod_rr" onclick="toggleMod('rr')">Mod</button>
                 </div>
             </div>
 
@@ -242,7 +280,8 @@
                     <input type="number" inputmode="decimal" class="calc-input" id="calc_spo2" placeholder="%" oninput="runAddsCalc()">
                 </div>
                 <div class="col-4">
-                    <input type="text" class="score-box" id="score_spo2" value="0" readonly oninput="runManualTotal()">
+                    <input type="text" class="score-box" id="score_spo2" value="0" readonly>
+                    <button type="button" class="mod-chip" id="mod_spo2" onclick="toggleMod('spo2')">Mod</button>
                 </div>
             </div>
 
@@ -255,7 +294,8 @@
                      <input type="number" inputmode="decimal" class="calc-input" id="calc_o2_val" placeholder="L / %" oninput="runAddsCalc()">
                 </div>
                 <div class="col-4">
-                    <input type="text" class="score-box" id="score_o2" value="0" readonly oninput="runManualTotal()">
+                    <input type="text" class="score-box" id="score_o2" value="0" readonly>
+                    <button type="button" class="mod-chip" id="mod_o2" onclick="toggleMod('o2')">Mod</button>
                 </div>
             </div>
 
@@ -265,7 +305,8 @@
                     <input type="number" inputmode="decimal" class="calc-input" id="calc_sbp" placeholder="mmHg" oninput="runAddsCalc()">
                 </div>
                 <div class="col-4">
-                    <input type="text" class="score-box" id="score_sbp" value="0" readonly oninput="runManualTotal()">
+                    <input type="text" class="score-box" id="score_sbp" value="0" readonly>
+                    <button type="button" class="mod-chip" id="mod_sbp" onclick="toggleMod('sbp')">Mod</button>
                 </div>
             </div>
 
@@ -275,7 +316,8 @@
                     <input type="number" inputmode="decimal" class="calc-input" id="calc_hr" placeholder="BPM" oninput="runAddsCalc()">
                 </div>
                 <div class="col-4">
-                    <input type="text" class="score-box" id="score_hr" value="0" readonly oninput="runManualTotal()">
+                    <input type="text" class="score-box" id="score_hr" value="0" readonly>
+                    <button type="button" class="mod-chip" id="mod_hr" onclick="toggleMod('hr')">Mod</button>
                 </div>
             </div>
 
@@ -285,7 +327,8 @@
                     <input type="number" inputmode="decimal" class="calc-input" id="calc_temp" step="0.1" placeholder="°C" oninput="runAddsCalc()">
                 </div>
                 <div class="col-4">
-                    <input type="text" class="score-box" id="score_temp" value="0" readonly oninput="runManualTotal()">
+                    <input type="text" class="score-box" id="score_temp" value="0" readonly>
+                    <button type="button" class="mod-chip" id="mod_temp" onclick="toggleMod('temp')">Mod</button>
                 </div>
             </div>
 
@@ -302,14 +345,20 @@
                 <div class="col-12">
                      <div style="display:flex; align-items:center; justify-content:flex-end; gap:10px;">
                         <span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--muted);">CNS Score</span>
-                        <input type="text" class="score-box" style="width:100px;" id="score_avpu" value="0" readonly oninput="runManualTotal()">
+                        <div style="width:100px;">
+                            <input type="text" class="score-box" id="score_avpu" value="0" readonly>
+                            <button type="button" class="mod-chip" id="mod_avpu" onclick="toggleMod('avpu')">Mod</button>
+                        </div>
                      </div>
                 </div>
             </div>
             
             <div class="total-bar">
                 <div style="font-weight:600; text-transform:uppercase; letter-spacing:1px; font-size:0.9rem;">Total ADDS Score</div>
-                <div id="calc_total_display" style="font-size:2.5rem; font-weight:900;">0</div>
+                <div style="text-align:right;">
+                    <div id="calc_total_display" style="font-size:2.5rem; font-weight:900; line-height:1;">0</div>
+                    <div id="calc_total_sub" style="font-size:0.8rem; font-weight:600; opacity:0.7; margin-top:4px;"></div>
+                </div>
             </div>
 
             <button class="btn-reset" onclick="resetAdds()">Reset Calculator</button>
@@ -343,12 +392,104 @@
             <button class="btn-reset" onclick="resetRR()">Reset Timer</button>
         </div>
     </div>
-    
+
+    <div id="view-gcs" class="hidden">
+        <button class="btn-back" onclick="showView('view-home')">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Back to Menu
+        </button>
+
+        <div class="gcs-total-bar">
+            <div class="gcs-total-left">
+                <div class="gcs-total-label">Total GCS</div>
+                <div class="gcs-total-num" id="gcs_total_display">15</div>
+                <div class="gcs-breakdown" id="gcs_breakdown_display">E4 V5 M6</div>
+            </div>
+        </div>
+
+        <!-- EYES -->
+        <div class="gcs-row">
+            <div class="gcs-row-header">
+                <span class="gcs-row-name">Eyes (E)</span>
+                <span class="gcs-row-score" id="gcs_e_val">4</span>
+            </div>
+            <div class="gcs-pills" id="gcs_eyes_grid">
+                <button class="gcs-pill active" data-val="4" onclick="setGcs('E', 4)">
+                    <span class="gcs-pill-num">4</span><span class="gcs-pill-lbl">Spont.</span>
+                </button>
+                <button class="gcs-pill" data-val="3" onclick="setGcs('E', 3)">
+                    <span class="gcs-pill-num">3</span><span class="gcs-pill-lbl">Sound</span>
+                </button>
+                <button class="gcs-pill" data-val="2" onclick="setGcs('E', 2)">
+                    <span class="gcs-pill-num">2</span><span class="gcs-pill-lbl">Pain</span>
+                </button>
+                <button class="gcs-pill" data-val="1" onclick="setGcs('E', 1)">
+                    <span class="gcs-pill-num">1</span><span class="gcs-pill-lbl">None</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- VERBAL -->
+        <div class="gcs-row">
+            <div class="gcs-row-header">
+                <span class="gcs-row-name">Verbal (V)</span>
+                <span class="gcs-row-score" id="gcs_v_val">5</span>
+            </div>
+            <div class="gcs-pills" id="gcs_verbal_grid">
+                <button class="gcs-pill active" data-val="5" onclick="setGcs('V', 5)">
+                    <span class="gcs-pill-num">5</span><span class="gcs-pill-lbl">Orient.</span>
+                </button>
+                <button class="gcs-pill" data-val="4" onclick="setGcs('V', 4)">
+                    <span class="gcs-pill-num">4</span><span class="gcs-pill-lbl">Confus.</span>
+                </button>
+                <button class="gcs-pill" data-val="3" onclick="setGcs('V', 3)">
+                    <span class="gcs-pill-num">3</span><span class="gcs-pill-lbl">Words</span>
+                </button>
+                <button class="gcs-pill" data-val="2" onclick="setGcs('V', 2)">
+                    <span class="gcs-pill-num">2</span><span class="gcs-pill-lbl">Sounds</span>
+                </button>
+                <button class="gcs-pill" data-val="1" onclick="setGcs('V', 1)">
+                    <span class="gcs-pill-num">1</span><span class="gcs-pill-lbl">None</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- MOTOR -->
+        <div class="gcs-row">
+            <div class="gcs-row-header">
+                <span class="gcs-row-name">Motor (M)</span>
+                <span class="gcs-row-score" id="gcs_m_val">6</span>
+            </div>
+            <div class="gcs-pills" id="gcs_motor_grid">
+                <button class="gcs-pill active" data-val="6" onclick="setGcs('M', 6)">
+                    <span class="gcs-pill-num">6</span><span class="gcs-pill-lbl">Obeys</span>
+                </button>
+                <button class="gcs-pill" data-val="5" onclick="setGcs('M', 5)">
+                    <span class="gcs-pill-num">5</span><span class="gcs-pill-lbl">Local.</span>
+                </button>
+                <button class="gcs-pill" data-val="4" onclick="setGcs('M', 4)">
+                    <span class="gcs-pill-num">4</span><span class="gcs-pill-lbl">W'draw</span>
+                </button>
+                <button class="gcs-pill" data-val="3" onclick="setGcs('M', 3)">
+                    <span class="gcs-pill-num">3</span><span class="gcs-pill-lbl">Decort.</span>
+                </button>
+                <button class="gcs-pill" data-val="2" onclick="setGcs('M', 2)">
+                    <span class="gcs-pill-num">2</span><span class="gcs-pill-lbl">Decerb.</span>
+                </button>
+                <button class="gcs-pill" data-val="1" onclick="setGcs('M', 1)">
+                    <span class="gcs-pill-num">1</span><span class="gcs-pill-lbl">None</span>
+                </button>
+            </div>
+        </div>
+
+        <button class="btn-reset" onclick="resetGcs()">Reset GCS</button>
+        <div style="height:20px;"></div>
+    </div>
+
   </div>
 
 <script>
     // ----- NAVIGATION -----
-    const views = ['view-home', 'view-adds', 'view-rr'];
+    const views = ['view-home', 'view-adds', 'view-rr', 'view-gcs'];
     function showView(viewId) {
         views.forEach(v => document.getElementById(v).classList.add('hidden'));
         document.getElementById(viewId).classList.remove('hidden');
@@ -357,23 +498,15 @@
 
     // ----- ADDS CALCULATOR LOGIC -----
     let currentAvpu = 'A';
-    let isOverrideMode = false;
 
-    function toggleOverride() {
-        isOverrideMode = document.getElementById('adds-override').checked;
-        const scoreBoxes = document.querySelectorAll('.score-box');
-        
-        scoreBoxes.forEach(box => {
-            if(isOverrideMode) {
-                box.removeAttribute('readonly');
-                box.classList.add('editable');
-            } else {
-                box.setAttribute('readonly', true);
-                box.classList.remove('editable');
-                // When turning off, re-run auto calc to fix any manual changes
-                runAddsCalc();
-            }
-        });
+    // A modded parameter scores 0 and cannot trigger a MET call.
+    const PARAMS = ['rr','spo2','o2','sbp','hr','temp','avpu'];
+    let modded = { rr:false, spo2:false, o2:false, sbp:false, hr:false, temp:false, avpu:false };
+
+    function toggleMod(key) {
+        modded[key] = !modded[key];
+        document.getElementById('mod_' + key).classList.toggle('active', modded[key]);
+        runAddsCalc();
     }
 
     function setAvpu(val) {
@@ -386,8 +519,10 @@
     }
     
     function resetAdds() {
-        document.getElementById('adds-override').checked = false;
-        toggleOverride(); 
+        PARAMS.forEach(key => {
+            modded[key] = false;
+            document.getElementById('mod_' + key).classList.remove('active');
+        });
         ['calc_rr','calc_spo2','calc_o2_val','calc_sbp','calc_hr','calc_temp'].forEach(id => document.getElementById(id).value = '');
         document.querySelector('input[name="calc_o2_mode"][value="std"]').checked = true;
         setAvpu('A');
@@ -418,15 +553,16 @@
                 if(n >= 2) return { s: 1, m: false };
                 return { s: 0, m: false };
             } else {
-                if(n >= 60) return { s: 3, m: false };
-                if(n >= 40) return { s: 2, m: false };
-                if(n >= 29) return { s: 1, m: false };
+                // High flow nasal cannula (Airvo 2 / Blender), scored on FiO2 %
+                if(n > 40) return { s: 3, m: false };
+                if(n >= 29) return { s: 2, m: false };
+                if(n >= 21) return { s: 1, m: false };
                 return { s: 0, m: false };
             }
         }
         if(type === 'sbp') {
             if(n >= 200) return { s: 3, m: false };
-            if(n >= 180) return { s: 2, m: false };
+            if(n >= 170) return { s: 2, m: false };
             if(n >= 160) return { s: 1, m: false };
             if(n <= 89) return { s: 3, m: true }; 
             if(n <= 99) return { s: 2, m: false };
@@ -436,7 +572,7 @@
         if(type === 'hr') {
             if(n >= 140) return { s: 3, m: true };
             if(n >= 130) return { s: 3, m: false };
-            if(n >= 120) return { s: 2, m: false };
+            if(n >= 110) return { s: 2, m: false };
             if(n >= 100) return { s: 1, m: false };
             if(n <= 39) return { s: 3, m: true };
             if(n <= 49) return { s: 1, m: false };
@@ -452,17 +588,19 @@
         return { s: 0, m: false };
     }
 
-    function updateScoreUI(id, res) {
+    function updateScoreUI(id, res, key) {
         const el = document.getElementById(id);
-        if(!isOverrideMode) {
-            el.value = res.m ? "M" : res.s;
+        el.className = 'score-box';
+
+        if(modded[key]) {
+            el.value = "0";
+            el.classList.add('modded');
+            return;
         }
-        const val = el.value;
-        el.className = 'score-box'; 
-        if(isOverrideMode) el.classList.add('editable');
-        
-        if(val === 'M' || val === 'm') el.classList.add('m-score');
-        else if(parseInt(val) > 0) el.classList.add('active-score');
+
+        el.value = res.m ? "M" : res.s;
+        if(res.m) el.classList.add('m-score');
+        else if(res.s > 0) el.classList.add('active-score');
     }
 
     function runAddsCalc() {
@@ -486,41 +624,88 @@
         else if(currentAvpu === 'P') rAv.s = 3;
         else if(currentAvpu === 'U') { rAv.s = 3; rAv.m = true; }
 
-        updateScoreUI('score_rr', rR);
-        updateScoreUI('score_spo2', rSp);
-        updateScoreUI('score_o2', rO2);
-        updateScoreUI('score_sbp', rBp);
-        updateScoreUI('score_hr', rHr);
-        updateScoreUI('score_temp', rTp);
-        updateScoreUI('score_avpu', rAv);
+        updateScoreUI('score_rr', rR, 'rr');
+        updateScoreUI('score_spo2', rSp, 'spo2');
+        updateScoreUI('score_o2', rO2, 'o2');
+        updateScoreUI('score_sbp', rBp, 'sbp');
+        updateScoreUI('score_hr', rHr, 'hr');
+        updateScoreUI('score_temp', rTp, 'temp');
+        updateScoreUI('score_avpu', rAv, 'avpu');
 
         calculateTotal();
     }
 
-    function runManualTotal() {
-        ['score_rr','score_spo2','score_o2','score_sbp','score_hr','score_temp','score_avpu'].forEach(id => {
-            const el = document.getElementById(id);
-            const val = el.value;
-            el.className = 'score-box editable';
-            if(val === 'M' || val === 'm') el.classList.add('m-score');
-            else if(parseInt(val) > 0) el.classList.add('active-score');
+    // --- GCS CALCULATOR LOGIC ---
+    let gcsState = { E: 4, V: 5, M: 6 };
+
+    function setGcs(component, val) {
+        gcsState[component] = val;
+        const gridId = component === 'E' ? 'gcs_eyes_grid' : component === 'V' ? 'gcs_verbal_grid' : 'gcs_motor_grid';
+        document.querySelectorAll(`#${gridId} .gcs-pill`).forEach(btn => {
+            btn.classList.toggle('active', String(btn.dataset.val) === String(val));
         });
-        calculateTotal();
+        updateGcsDisplay();
+    }
+
+    function updateGcsDisplay() {
+        const E = gcsState.E;
+        const V = gcsState.V;
+        const M = gcsState.M;
+
+        const total = E + V + M;
+
+        document.getElementById('gcs_e_val').textContent = E;
+        document.getElementById('gcs_v_val').textContent = V;
+        document.getElementById('gcs_m_val').textContent = M;
+
+        const totalEl = document.getElementById('gcs_total_display');
+        totalEl.textContent = total;
+
+        if (total <= 8) {
+            totalEl.style.color = '#f87171';
+        } else if (total <= 12) {
+            totalEl.style.color = '#fbbf24';
+        } else {
+            totalEl.style.color = 'white';
+        }
+        document.getElementById('gcs_breakdown_display').textContent = `E${E} V${V} M${M}`;
+    }
+
+    function resetGcs() {
+        gcsState = { E: 4, V: 5, M: 6 };
+        ['gcs_eyes_grid','gcs_verbal_grid','gcs_motor_grid'].forEach(gridId => {
+            document.querySelectorAll(`#${gridId} .gcs-pill`).forEach(btn => btn.classList.remove('active'));
+        });
+        document.querySelector('#gcs_eyes_grid .gcs-pill[data-val="4"]').classList.add('active');
+        document.querySelector('#gcs_verbal_grid .gcs-pill[data-val="5"]').classList.add('active');
+        document.querySelector('#gcs_motor_grid .gcs-pill[data-val="6"]').classList.add('active');
+        updateGcsDisplay(); // was missing: total and breakdown kept stale values on reset
     }
 
     function calculateTotal() {
         let total = 0;
         let isM = false;
-        
-        ['score_rr','score_spo2','score_o2','score_sbp','score_hr','score_temp','score_avpu'].forEach(id => {
-            const val = document.getElementById(id).value;
+
+        PARAMS.forEach(key => {
+            if(modded[key]) return; // modded parameters score 0 and cannot trigger MET
+            const val = document.getElementById('score_' + key).value;
             if(val === 'M' || val === 'm') isM = true;
             else if(!isNaN(parseInt(val))) total += parseInt(val);
         });
 
         const totalDisplay = document.getElementById('calc_total_display');
-        totalDisplay.innerText = total + (isM ? ' (M)' : '');
-        totalDisplay.style.color = (total >= 8 || isM) ? 'var(--red)' : '#ffffff';
+        const subDisplay = document.getElementById('calc_total_sub');
+
+        if(isM) {
+            // Any un-modded M zone overrides the numeric score outright.
+            totalDisplay.innerText = 'MET';
+            totalDisplay.style.color = 'var(--red)';
+            subDisplay.innerText = 'ADDS ' + total;
+        } else {
+            totalDisplay.innerText = total;
+            totalDisplay.style.color = (total >= 8) ? 'var(--red)' : '#ffffff';
+            subDisplay.innerText = '';
+        }
     }
 
 
