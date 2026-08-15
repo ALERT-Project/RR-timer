@@ -86,60 +86,85 @@
         margin-top: 10px; box-shadow: none; font-weight: 700; cursor: pointer; text-transform: uppercase;
     }
 
-    /* --- CALCULATOR STYLES --- */
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; align-items: center;}
-    .col-12 { grid-column: span 12; } .col-8 { grid-column: span 8; } .col-4 { grid-column: span 4; }
-
-    .calc-label {
-        font-size: 0.75rem; text-transform: uppercase; color: var(--muted); 
-        font-weight: 700; display: block; margin-bottom: 4px; padding-left: 4px;
+    /* --- ADDS CALCULATOR --- */
+    /* Each vital row is its own card */
+    .adds-card {
+        background: white; border-radius: 12px; padding: 10px 12px;
+        border: 1px solid var(--line);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        margin-bottom: 8px;
+        display: flex; align-items: center; justify-content: space-between; gap: 8px;
     }
-
-    .calc-input {
-        width: 100%; height: 55px; border: 2px solid var(--line);
-        border-radius: 10px; padding: 0 12px; font-size: 1.2rem;
-        font-weight: 700; color: var(--ink); text-align: center;
-        transition: all 0.2s; box-sizing: border-box; background: var(--input-bg);
+    .adds-card-col-left { display: flex; flex-direction: column; width: 75px; flex-shrink: 0; }
+    .adds-card-label {
+        font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+        letter-spacing: 0.3px; color: var(--muted); line-height: 1.1;
     }
-    .calc-input:focus { border-color: var(--accent); outline: none; background: white; }
-    
+    .adds-unit { font-weight: 500; opacity: 0.6; text-transform: none; letter-spacing: 0; display: block; font-size: 0.55rem; margin-top: 2px;}
+    .adds-score-wrap { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+    /* Big number input */
+    .adds-main-input {
+        flex: 1; height: 44px; border: 2px solid #e2e8f0;
+        border-radius: 10px; background: #f8fafc;
+        font-size: 1.4rem; font-weight: 700; text-align: center; color: var(--ink);
+        outline: none; box-sizing: border-box; transition: all 0.2s; min-width: 0;
+    }
+    .adds-main-input:focus { border-color: var(--accent); background: white; box-shadow: 0 0 0 3px rgba(13,148,136,0.12); }
+
+    /* Score badge — styled input */
     .score-box {
-        width: 100%; height: 55px; border-radius: 10px;
-        background: #e5e7eb; border: none;
-        color: var(--muted); font-size: 1.4rem; font-weight: 800;
-        text-align: center; display: flex; align-items: center; justify-content: center;
-        transition: all 0.3s; box-sizing: border-box;
+        width: 44px; height: 44px; border-radius: 10px; border: none;
+        font-size: 1.2rem; font-weight: 900; text-align: center;
+        background: #f1f5f9; color: #94a3b8;
+        flex-shrink: 0; transition: all 0.3s; box-sizing: border-box;
     }
-    .score-box.active-score { background: var(--accent); color: white; }
-    .score-box.m-score { background: var(--red); color: white; }
+    .score-box.score-1 { background: #dbeafe; color: #1d4ed8; }
+    .score-box.score-2 { background: #ffedd5; color: #c2410c; }
+    .score-box.score-3 { background: #fee2e2; color: #dc2626; }
+    .score-box.score-m { background: #dc2626; color: white; }
 
     /* MOD (per-parameter modification) */
     .mod-chip {
-        width: 100%; margin-top: 6px; padding: 6px 0;
-        border-radius: 8px; border: 2px solid var(--line);
-        background: white; color: var(--muted);
-        font-size: 0.7rem; font-weight: 800; letter-spacing: 1px;
-        text-transform: uppercase; cursor: pointer;
-        transition: all 0.2s; touch-action: manipulation;
+        background: white; border: 2px solid #e2e8f0; cursor: pointer; padding: 0;
+        color: var(--muted); border-radius: 8px; display: flex; align-items: center;
+        justify-content: center; transition: all 0.2s; flex-shrink: 0;
+        position: relative; z-index: 2; width: 44px; height: 44px;
+        font-size: 0.65rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase;
+        touch-action: manipulation;
     }
     .mod-chip.active { background: #f59e0b; border-color: #f59e0b; color: white; }
-    .score-box.modded {
-        background: #f3f4f6; color: #9ca3af; text-decoration: line-through;
-    }
+    .mod-chip:active { transform: scale(0.9); }
+    .score-box.modded { background: #f1f5f9; color: #94a3b8; text-decoration: line-through; }
 
-    /* AVPU */
-    .avpu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: var(--line); padding: 4px; border-radius: 10px; }
-    .avpu-btn {
-        border: none; background: #f9fafb; padding: 12px 0; font-weight: 700; color: var(--muted);
-        border-radius: 6px; cursor: pointer; font-size: 0.9rem;
+    /* O2 segmented control */
+    .o2-seg { display: flex; gap: 0; border-radius: 10px; overflow: hidden; border: 2px solid #e2e8f0; height: 44px; }
+    .o2-seg label {
+        flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px;
+        font-size: 0.75rem; font-weight: 700; cursor: pointer;
+        background: #f8fafc; color: var(--muted); transition: all 0.2s; text-align: center;
     }
-    .avpu-btn.active { background: var(--accent); color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .o2-seg input[type="radio"] { display: none; }
+    .o2-seg input[type="radio"]:checked + span { color: var(--accent); font-weight: 800; }
+    .o2-seg label:has(input:checked) { background: white; color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+
+    /* AVPU bigger buttons */
+    .avpu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; width: 100%; }
+    .avpu-btn {
+        border: 2px solid #e2e8f0; background: #f8fafc; padding: 10px 0;
+        font-weight: 800; color: var(--muted); border-radius: 10px;
+        cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
+    }
+    .avpu-btn-sub { font-size: 0.55rem; font-weight: 600; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.3px; }
+    .avpu-btn.active { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 3px 8px rgba(13,148,136,0.3); }
+    .avpu-btn.active .avpu-btn-sub { opacity: 0.85; }
 
     /* TOTAL BAR */
     .total-bar {
-        background: #111827; padding: 20px; border-radius: 14px;
+        background: #111827; padding: 16px 20px; border-radius: 14px;
         display: flex; justify-content: space-between; align-items: center;
-        color: white; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+        color: white; box-shadow: 0 8px 12px -3px rgba(0,0,0,0.2); margin-top: 4px;
     }
 
     /* --- RR TIMER UPDATED STYLES --- */
@@ -260,114 +285,117 @@
         <button class="btn-back" onclick="showView('view-home')">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Back to Menu
         </button>
-        
 
-        <div class="card">
-            <div class="grid" style="margin-bottom:8px;">
-                <div class="col-8"><div class="section-title">Measurement</div></div>
-                <div class="col-4" style="text-align:center;"><div class="section-title" style="justify-content:center;">Score</div></div>
+        <!-- Resp Rate -->
+        <div class="adds-card">
+            <div class="adds-card-col-left">
+                <span class="adds-card-label">Resp Rate</span>
+                <span class="adds-unit">breaths/min</span>
             </div>
-
-            <div class="grid">
-                <div class="col-8">
-                    <label class="calc-label">Resp Rate</label>
-                    <input type="number" inputmode="decimal" class="calc-input" id="calc_rr" placeholder="RR" oninput="runAddsCalc()">
-                </div>
-                <div class="col-4">
-                    <input type="text" class="score-box" id="score_rr" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_rr" onclick="toggleMod('rr')">Tap to Mod</button>
-                </div>
+            <input type="number" inputmode="decimal" class="adds-main-input" id="calc_rr" placeholder="&#8212;" oninput="runAddsCalc()">
+            <div class="adds-score-wrap">
+                <input type="text" class="score-box" id="score_rr" value="0" readonly>
+                <button type="button" class="mod-chip" id="mod_rr" onclick="toggleMod('rr')" title="Modification">Mod</button>
             </div>
-
-            <div class="grid">
-                <div class="col-8">
-                    <label class="calc-label">SpO2 (%)</label>
-                    <input type="number" inputmode="decimal" class="calc-input" id="calc_spo2" placeholder="%" oninput="runAddsCalc()">
-                </div>
-                <div class="col-4">
-                    <input type="text" class="score-box" id="score_spo2" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_spo2" onclick="toggleMod('spo2')">Tap to Mod</button>
-                </div>
-            </div>
-
-            <div class="grid" style="background:#f9fafb; padding:10px; border-radius:12px; border:1px solid var(--line);">
-                <div class="col-12" style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                    <label style="font-size:0.8rem; font-weight:700; display:flex; align-items:center;"><input type="radio" name="calc_o2_mode" value="std" checked onchange="runAddsCalc()" style="width:20px; height:20px; margin-right:6px;"> Standard</label>
-                    <label style="font-size:0.8rem; font-weight:700; display:flex; align-items:center;"><input type="radio" name="calc_o2_mode" value="hf" onchange="runAddsCalc()" style="width:20px; height:20px; margin-right:6px;"> High Flow</label>
-                </div>
-                <div class="col-8">
-                     <input type="number" inputmode="decimal" class="calc-input" id="calc_o2_val" placeholder="L / %" oninput="runAddsCalc()">
-                </div>
-                <div class="col-4">
-                    <input type="text" class="score-box" id="score_o2" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_o2" onclick="toggleMod('o2')">Tap to Mod</button>
-                </div>
-            </div>
-
-            <div class="grid">
-                <div class="col-8">
-                    <label class="calc-label">Systolic BP</label>
-                    <input type="number" inputmode="decimal" class="calc-input" id="calc_sbp" placeholder="mmHg" oninput="runAddsCalc()">
-                </div>
-                <div class="col-4">
-                    <input type="text" class="score-box" id="score_sbp" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_sbp" onclick="toggleMod('sbp')">Tap to Mod</button>
-                </div>
-            </div>
-
-            <div class="grid">
-                <div class="col-8">
-                    <label class="calc-label">Heart Rate</label>
-                    <input type="number" inputmode="decimal" class="calc-input" id="calc_hr" placeholder="BPM" oninput="runAddsCalc()">
-                </div>
-                <div class="col-4">
-                    <input type="text" class="score-box" id="score_hr" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_hr" onclick="toggleMod('hr')">Tap to Mod</button>
-                </div>
-            </div>
-
-            <div class="grid">
-                <div class="col-8">
-                    <label class="calc-label">Temp (°C)</label>
-                    <input type="number" inputmode="decimal" class="calc-input" id="calc_temp" step="0.1" placeholder="°C" oninput="runAddsCalc()">
-                </div>
-                <div class="col-4">
-                    <input type="text" class="score-box" id="score_temp" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_temp" onclick="toggleMod('temp')">Tap to Mod</button>
-                </div>
-            </div>
-
-            <div class="grid">
-                <div class="col-12">
-                    <label class="calc-label">Consciousness</label>
-                    <div class="avpu-grid" id="calc_avpu">
-                        <button class="avpu-btn active" data-value="A" onclick="setAvpu('A')">Alert</button>
-                        <button class="avpu-btn" data-value="V" onclick="setAvpu('V')">Voice</button>
-                        <button class="avpu-btn" data-value="P" onclick="setAvpu('P')">Pain</button>
-                        <button class="avpu-btn" data-value="U" onclick="setAvpu('U')">Unresp</button>
-                    </div>
-                </div>
-                <div class="col-12">
-                     <div style="display:flex; align-items:center; justify-content:flex-end; gap:10px;">
-                        <span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--muted);">CNS Score</span>
-                        <div style="width:100px;">
-                            <input type="text" class="score-box" id="score_avpu" value="0" readonly>
-                            <button type="button" class="mod-chip" id="mod_avpu" onclick="toggleMod('avpu')">Tap to Mod</button>
-                        </div>
-                     </div>
-                </div>
-            </div>
-            
-            <div class="total-bar">
-                <div style="font-weight:600; text-transform:uppercase; letter-spacing:1px; font-size:0.9rem;">Total ADDS Score</div>
-                <div style="text-align:right;">
-                    <div id="calc_total_display" style="font-size:2.5rem; font-weight:900; line-height:1;">0</div>
-                    <div id="calc_total_sub" style="font-size:0.8rem; font-weight:600; opacity:0.7; margin-top:4px;"></div>
-                </div>
-            </div>
-
-            <button class="btn-reset" onclick="resetAdds()">Reset Calculator</button>
         </div>
+
+        <!-- SpO2 -->
+        <div class="adds-card">
+            <div class="adds-card-col-left">
+                <span class="adds-card-label">SpO2</span>
+                <span class="adds-unit">%</span>
+            </div>
+            <input type="number" inputmode="decimal" class="adds-main-input" id="calc_spo2" placeholder="&#8212;" oninput="runAddsCalc()">
+            <div class="adds-score-wrap">
+                <input type="text" class="score-box" id="score_spo2" value="0" readonly>
+                <button type="button" class="mod-chip" id="mod_spo2" onclick="toggleMod('spo2')" title="Modification">Mod</button>
+            </div>
+        </div>
+
+        <!-- O2 -->
+        <div class="adds-card" style="flex-wrap: wrap;">
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <div class="adds-card-col-left" style="width: auto;"><span class="adds-card-label">Supplemental O2</span></div>
+                <div class="adds-score-wrap">
+                    <input type="text" class="score-box" id="score_o2" value="0" readonly>
+                    <button type="button" class="mod-chip" id="mod_o2" onclick="toggleMod('o2')" title="Modification">Mod</button>
+                </div>
+            </div>
+            <div class="o2-seg" style="flex: 1;">
+                <label><input type="radio" name="calc_o2_mode" value="std" checked onchange="runAddsCalc()"><span>Std (L)</span></label>
+                <label><input type="radio" name="calc_o2_mode" value="hf" onchange="runAddsCalc()"><span>HF (%)</span></label>
+            </div>
+            <input type="number" inputmode="decimal" class="adds-main-input" id="calc_o2_val" placeholder="&#8212;" oninput="runAddsCalc()" style="flex: 0.6; margin-left: 6px;">
+        </div>
+
+        <!-- Systolic BP -->
+        <div class="adds-card">
+            <div class="adds-card-col-left">
+                <span class="adds-card-label">Systolic BP</span>
+                <span class="adds-unit">mmHg</span>
+            </div>
+            <input type="number" inputmode="decimal" class="adds-main-input" id="calc_sbp" placeholder="&#8212;" oninput="runAddsCalc()">
+            <div class="adds-score-wrap">
+                <input type="text" class="score-box" id="score_sbp" value="0" readonly>
+                <button type="button" class="mod-chip" id="mod_sbp" onclick="toggleMod('sbp')" title="Modification">Mod</button>
+            </div>
+        </div>
+
+        <!-- Heart Rate -->
+        <div class="adds-card">
+            <div class="adds-card-col-left">
+                <span class="adds-card-label">Heart Rate</span>
+                <span class="adds-unit">bpm</span>
+            </div>
+            <input type="number" inputmode="decimal" class="adds-main-input" id="calc_hr" placeholder="&#8212;" oninput="runAddsCalc()">
+            <div class="adds-score-wrap">
+                <input type="text" class="score-box" id="score_hr" value="0" readonly>
+                <button type="button" class="mod-chip" id="mod_hr" onclick="toggleMod('hr')" title="Modification">Mod</button>
+            </div>
+        </div>
+
+        <!-- Temperature -->
+        <div class="adds-card">
+            <div class="adds-card-col-left">
+                <span class="adds-card-label">Temp</span>
+                <span class="adds-unit">&#176;C</span>
+            </div>
+            <input type="number" inputmode="decimal" step="0.1" class="adds-main-input" id="calc_temp" placeholder="&#8212;" oninput="runAddsCalc()">
+            <div class="adds-score-wrap">
+                <input type="text" class="score-box" id="score_temp" value="0" readonly>
+                <button type="button" class="mod-chip" id="mod_temp" onclick="toggleMod('temp')" title="Modification">Mod</button>
+            </div>
+        </div>
+
+        <!-- Consciousness / AVPU -->
+        <div class="adds-card" style="flex-wrap: wrap;">
+            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <div class="adds-card-col-left" style="width: auto; flex-direction: row; align-items: baseline; gap: 4px;">
+                    <span class="adds-card-label">Consciousness</span><span class="adds-unit">AVPU</span>
+                </div>
+                <div class="adds-score-wrap">
+                    <input type="text" class="score-box" id="score_avpu" value="0" readonly>
+                    <button type="button" class="mod-chip" id="mod_avpu" onclick="toggleMod('avpu')" title="Modification">Mod</button>
+                </div>
+            </div>
+            <div class="avpu-grid" id="calc_avpu">
+                <button class="avpu-btn active" data-value="A" onclick="setAvpu('A')">A<span class="avpu-btn-sub">Alert</span></button>
+                <button class="avpu-btn" data-value="V" onclick="setAvpu('V')">V<span class="avpu-btn-sub">Voice</span></button>
+                <button class="avpu-btn" data-value="P" onclick="setAvpu('P')">P<span class="avpu-btn-sub">Pain</span></button>
+                <button class="avpu-btn" data-value="U" onclick="setAvpu('U')">U<span class="avpu-btn-sub">Unresp</span></button>
+            </div>
+        </div>
+
+        <!-- Total -->
+        <div class="total-bar">
+            <div style="font-weight:600; text-transform:uppercase; letter-spacing:1px; font-size:0.9rem;">Total ADDS Score</div>
+            <div style="text-align:right;">
+                <div id="calc_total_display" style="font-size:2.5rem; font-weight:900; line-height:1;">0</div>
+                <div id="calc_total_sub" style="font-size:0.8rem; font-weight:600; opacity:0.7; margin-top:4px;"></div>
+            </div>
+        </div>
+
+        <button class="btn-reset" onclick="resetAdds()">Reset Calculator</button>
         <div style="height:40px;"></div>
     </div>
 
@@ -604,8 +632,10 @@
         }
 
         el.value = res.m ? "M" : res.s;
-        if(res.m) el.classList.add('m-score');
-        else if(res.s > 0) el.classList.add('active-score');
+        if (res.m) el.classList.add('score-m');
+        else if (res.s === 3) el.classList.add('score-3');
+        else if (res.s === 2) el.classList.add('score-2');
+        else if (res.s === 1) el.classList.add('score-1');
     }
 
     function runAddsCalc() {
