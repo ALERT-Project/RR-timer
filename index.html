@@ -119,11 +119,6 @@
     .score-box.modded {
         background: #f3f4f6; color: #9ca3af; text-decoration: line-through;
     }
-    .mod-note {
-        background: #fffbeb; border: 1px solid #fcd34d; color: #92400e;
-        padding: 10px 14px; border-radius: 10px; margin-bottom: 16px;
-        font-size: 0.8rem; font-weight: 600; line-height: 1.4;
-    }
 
     /* AVPU */
     .avpu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; background: var(--line); padding: 4px; border-radius: 10px; }
@@ -199,12 +194,12 @@
     }
     .gcs-row-name { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
     .gcs-row-score { font-size: 1.4rem; font-weight: 900; color: var(--accent); }
-    /* Wrap rather than scroll: the lowest (most critical) option must never be off-screen */
+    /* One row per parameter, pills shrink to fit so nothing is clipped or scrolled off */
     .gcs-pills {
-        display: flex; gap: 6px; flex-wrap: wrap;
+        display: flex; gap: 5px;
     }
     .gcs-pill {
-        flex: 1 1 auto; min-width: 62px; padding: 10px 6px;
+        flex: 1 1 0; min-width: 0; padding: 10px 2px;
         border-radius: 10px; border: 2px solid var(--line); background: var(--input-bg);
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         cursor: pointer; transition: transform 0.1s, background 0.2s;
@@ -215,8 +210,14 @@
         background: var(--accent); border-color: var(--accent); color: white;
     }
     .gcs-pill-num { font-size: 1.1rem; font-weight: 900; line-height: 1; }
-    .gcs-pill-lbl { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; margin-top: 3px; opacity: 0.65; white-space: nowrap; }
+    .gcs-pill-lbl { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; margin-top: 3px; opacity: 0.65; white-space: nowrap; }
     .gcs-pill.active .gcs-pill-lbl { opacity: 0.85; }
+    /* Motor has six options; on narrow phones the labels need to tighten to stay on one line */
+    @media (max-width: 360px) {
+        .gcs-pills { gap: 3px; }
+        .gcs-pill { padding: 10px 1px; }
+        .gcs-pill-lbl { font-size: 0.48rem; letter-spacing: -0.2px; }
+    }
 
   </style>
 </head>
@@ -253,9 +254,6 @@
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Back to Menu
         </button>
         
-        <div class="mod-note">
-            Tap <strong>MOD</strong> on any parameter with a documented modification. That parameter scores 0 and will not trigger a MET call.
-        </div>
 
         <div class="card">
             <div class="grid" style="margin-bottom:8px;">
@@ -270,7 +268,7 @@
                 </div>
                 <div class="col-4">
                     <input type="text" class="score-box" id="score_rr" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_rr" onclick="toggleMod('rr')">Mod</button>
+                    <button type="button" class="mod-chip" id="mod_rr" onclick="toggleMod('rr')">Tap to Mod</button>
                 </div>
             </div>
 
@@ -281,7 +279,7 @@
                 </div>
                 <div class="col-4">
                     <input type="text" class="score-box" id="score_spo2" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_spo2" onclick="toggleMod('spo2')">Mod</button>
+                    <button type="button" class="mod-chip" id="mod_spo2" onclick="toggleMod('spo2')">Tap to Mod</button>
                 </div>
             </div>
 
@@ -295,7 +293,7 @@
                 </div>
                 <div class="col-4">
                     <input type="text" class="score-box" id="score_o2" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_o2" onclick="toggleMod('o2')">Mod</button>
+                    <button type="button" class="mod-chip" id="mod_o2" onclick="toggleMod('o2')">Tap to Mod</button>
                 </div>
             </div>
 
@@ -306,7 +304,7 @@
                 </div>
                 <div class="col-4">
                     <input type="text" class="score-box" id="score_sbp" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_sbp" onclick="toggleMod('sbp')">Mod</button>
+                    <button type="button" class="mod-chip" id="mod_sbp" onclick="toggleMod('sbp')">Tap to Mod</button>
                 </div>
             </div>
 
@@ -317,7 +315,7 @@
                 </div>
                 <div class="col-4">
                     <input type="text" class="score-box" id="score_hr" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_hr" onclick="toggleMod('hr')">Mod</button>
+                    <button type="button" class="mod-chip" id="mod_hr" onclick="toggleMod('hr')">Tap to Mod</button>
                 </div>
             </div>
 
@@ -328,7 +326,7 @@
                 </div>
                 <div class="col-4">
                     <input type="text" class="score-box" id="score_temp" value="0" readonly>
-                    <button type="button" class="mod-chip" id="mod_temp" onclick="toggleMod('temp')">Mod</button>
+                    <button type="button" class="mod-chip" id="mod_temp" onclick="toggleMod('temp')">Tap to Mod</button>
                 </div>
             </div>
 
@@ -347,7 +345,7 @@
                         <span style="font-size:0.8rem; font-weight:700; text-transform:uppercase; color:var(--muted);">CNS Score</span>
                         <div style="width:100px;">
                             <input type="text" class="score-box" id="score_avpu" value="0" readonly>
-                            <button type="button" class="mod-chip" id="mod_avpu" onclick="toggleMod('avpu')">Mod</button>
+                            <button type="button" class="mod-chip" id="mod_avpu" onclick="toggleMod('avpu')">Tap to Mod</button>
                         </div>
                      </div>
                 </div>
